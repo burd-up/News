@@ -4,10 +4,12 @@ import {AppDispatch} from './store';
 import {apiNews} from "../api/api";
 
 type initialStateType = {
+    requestStatus: boolean
     news: Array<newsType>
 }
 
 const initialState: initialStateType = {
+    requestStatus: true,
     news: []
 };
 
@@ -20,17 +22,24 @@ export const newsSlice = createSlice({
                 state.news = [...state.news, ...action.payload.news]
             }
         },
+        deleteAllNews: (state:initialStateType) => {
+            state.news = []
+        }, changeRequestStatus: (state: initialStateType, action:{payload:{isRedy: boolean}}) => {
+            state.requestStatus = action.payload.isRedy
+        }
 
     },
 
 })
 
-export const {setNews} = newsSlice.actions
+export const {setNews, deleteAllNews, changeRequestStatus} = newsSlice.actions
 
 //thunk
 export const getNews = (page:number = 1, pageSize:number = 10, q:string) => {
     return async (dispatch: AppDispatch) => {
+        dispatch(changeRequestStatus({isRedy:false}))
         let data = await apiNews.getNews(page, pageSize, q);
+        data.status === 'ok' && dispatch(changeRequestStatus({isRedy:true}));
         data.status === 'ok' && dispatch(setNews({news: data.articles}));
     }
 }
