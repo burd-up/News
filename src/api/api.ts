@@ -35,6 +35,7 @@ export const apiNews = {
             return response.data;
         }).catch(function (error) {
             console.error(error);
+            return error
         });
     }
 };

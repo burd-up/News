@@ -9,22 +9,24 @@ input::-moz-placeholder {
 input::-webkit-input-placeholder {
     font-family: 'Space Grotesk';
 }
-
+a{
+    font-family: 'Space Grotesk';
+    text-decoration: none;
+    color: inherit;
+}
 .App {
     font-family: 'Space Grotesk';
     text-align: center;
     background-color: #333333;
+    overflow-x: hidden;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
 }
 
 .header {
+    z-index: 10;
     position: fixed;
     top: 0px;
     height: 60px;

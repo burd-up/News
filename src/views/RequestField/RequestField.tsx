@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useDispatch} from "react-redux";
-import {getNews, deleteAllNews} from "../../redux/news-reducer";
+import {getNews, deleteAllNews, setCurrentPage, setCurrentRequest} from "../../redux/news-reducer";
 import search from '../../images/search.svg';
 import style from './RequestField.module.css'
 
@@ -16,14 +16,22 @@ function RequestField() {
             setPlaceholder({text: 'Please enter your request', error: true})
         } else {
             dispatch(deleteAllNews());
-            dispatch(getNews(1, 15, request));
+            dispatch(setCurrentPage({page: 1}))
+            dispatch(setCurrentRequest({request: request}))
+            dispatch(getNews(1, 14, request));
             setPlaceholder({text: 'What are you looking for...', error: false})
         }
     }
 
   return (
     <div className={style.inputField}>
-      <input type={"text"} placeholder={placeholder.text} className={style.inputField__input} value={request} onChange={e => setRequest(e.target.value)}/>
+      <input type={"text"} placeholder={placeholder.text} className={style.inputField__input} value={request}
+             onKeyDown={(e) => {
+                 if (e.keyCode === 13) {
+                     makeRequest()
+                 }
+             }}
+             onChange={e => setRequest(e.target.value)}/>
       <button className={style.inputField__button} onClick={makeRequest}>
           <img className={style.inputField__img} src={search}/>
       </button>
